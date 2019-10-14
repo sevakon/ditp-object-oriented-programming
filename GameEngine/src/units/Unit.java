@@ -20,6 +20,34 @@ public class Unit {
         this.upperDamage = upperDamage;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public int getLowerDamage() {
+        return lowerDamage;
+    }
+
+    public int getUpperDamage() {
+        return upperDamage;
+    }
+
+    public double getInitiative() {
+        return initiative;
+    }
+
     @Override
     public String toString() {
         return "type: " + type + ", attack: " + hitPoints + ", attack: " + attack + ", defence: " +

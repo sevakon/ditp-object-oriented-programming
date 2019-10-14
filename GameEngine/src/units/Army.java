@@ -8,9 +8,16 @@ public class Army {
         int index = 0;
 
         for (UnitsStack unitsStack : unitsStacks) {
+            if (index == 6) {
+                break;
+            }
             stacks[index] = unitsStack;
             index++;
         }
+    }
+
+    public UnitsStack[] getStacks() {
+        return stacks;
     }
 
     @Override
@@ -19,7 +26,7 @@ public class Army {
 
         for (int i = 0; i < stacks.length; i++)
             if (stacks[i] != null)
-                stringBuilder.append(stacks[i].toString() + "; ");
+                stringBuilder.append(stacks[i] + "; ");
 
         return stringBuilder.toString();
     }

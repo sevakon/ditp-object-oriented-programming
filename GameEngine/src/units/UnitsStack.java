@@ -9,6 +9,14 @@ public class UnitsStack {
         this.numberOfUnits = numberOfUnits;
     }
 
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public int getNumberOfUnits() {
+        return numberOfUnits;
+    }
+
     @Override
     public String toString() {
         return unit.toString() + ", number: " + numberOfUnits;

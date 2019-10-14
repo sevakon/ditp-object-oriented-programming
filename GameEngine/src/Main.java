@@ -3,12 +3,44 @@ import units.*;
 public class Main {
 
     public static void main(String[] args) {
+        // Creating units instances
         Angel angel = new Angel();
+        BoneDragon dragon = new BoneDragon();
         Cyclops cyclops = new Cyclops();
-        UnitsStack unit1 = new UnitsStack(angel, 2);
-        UnitsStack unit2 = new UnitsStack(cyclops, 4);
-        Army army = new Army(unit1, unit2);
-        System.out.println(army.toString());
+        Crossbowman crossbowman = new Crossbowman();
+        Devil devil = new Devil();
+        Fury fury =  new Fury();
+        Griffon griffon = new Griffon();
+        Hydra hydra = new Hydra();
+        Lich lich = new Lich();
+        Shaman shaman = new Shaman();
+        Skeleton skeleton = new Skeleton();
+
+        // UnitsStack
+        UnitsStack angelStack = new UnitsStack(angel, 12);
+        UnitsStack  cyclopsStack = new UnitsStack(cyclops, 24);
+        UnitsStack dragonStack = new UnitsStack(dragon, 5);
+        UnitsStack crossbowStack = new UnitsStack(crossbowman, 3);
+        UnitsStack devilStack = new UnitsStack(devil, 6);
+        UnitsStack furyStack = new UnitsStack(fury, 2);
+        UnitsStack griffonStack = new UnitsStack(griffon, 8);
+        UnitsStack hydraStack = new UnitsStack(hydra, 9);
+        UnitsStack lichStack = new UnitsStack(lich, 7);
+        UnitsStack shamanStack = new UnitsStack(shaman, 1);
+        UnitsStack skeletonStack = new UnitsStack(skeleton, 15);
+
+        // Armies
+        Army army = new Army(hydraStack, skeletonStack);
+        System.out.println(army);
+
+        //Get methods example
+        UnitsStack[] stacks = army.getStacks();
+        for (int i = 0; i < stacks.length; i++) {
+            if (stacks[i] != null) {
+                Unit unit = stacks[i].getUnit();
+                System.out.println(unit.getAttack());
+            }
+        }
     }
 
 }
