@@ -1,4 +1,4 @@
-package units;
+package entities;
 
 public class UnitsStack {
     private Unit unit;

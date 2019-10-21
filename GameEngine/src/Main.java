@@ -1,9 +1,10 @@
-import units.*;
+import entities.*;
+import entities.Angel;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Creating units instances
+        // Creating entities instances
         Angel angel = new Angel();
         BoneDragon dragon = new BoneDragon();
         Cyclops cyclops = new Cyclops();
@@ -18,7 +19,7 @@ public class Main {
 
         // UnitsStack
         UnitsStack angelStack = new UnitsStack(angel, 12);
-        UnitsStack  cyclopsStack = new UnitsStack(cyclops, 24);
+        UnitsStack cyclopsStack = new UnitsStack(cyclops, 24);
         UnitsStack dragonStack = new UnitsStack(dragon, 5);
         UnitsStack crossbowStack = new UnitsStack(crossbowman, 3);
         UnitsStack devilStack = new UnitsStack(devil, 6);
@@ -38,9 +39,11 @@ public class Main {
         for (int i = 0; i < stacks.length; i++) {
             if (stacks[i] != null) {
                 Unit unit = stacks[i].getUnit();
-                System.out.println(unit.getAttack());
+                System.out.println(unit.getType());
             }
         }
+
+        System.out.print(skeleton.getCastes());
     }
 
 }

@@ -1,4 +1,4 @@
-package units;
+package entities;
 
 public class Army {
     private UnitsStack[] stacks;
@@ -8,9 +8,8 @@ public class Army {
         int index = 0;
 
         for (UnitsStack unitsStack : unitsStacks) {
-            if (index == 6) {
+            if (index == 6)
                 break;
-            }
             stacks[index] = unitsStack;
             index++;
         }
