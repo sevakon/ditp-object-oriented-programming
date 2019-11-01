@@ -1,4 +1,7 @@
-package entities;
+package units;
+
+import specialties.*;
+import campaign.Unit;
 
 public class Skeleton extends Unit {
 

@@ -1,4 +1,4 @@
-package entities;
+package units;
 
 public enum Type {
     ANGEL,

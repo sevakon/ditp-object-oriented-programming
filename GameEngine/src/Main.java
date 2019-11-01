@@ -1,10 +1,10 @@
-import entities.*;
-import entities.Angel;
+import campaign.*;
+import units.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Creating entities instances
+        // Creating campaign instances
         Angel angel = new Angel();
         BoneDragon dragon = new BoneDragon();
         Cyclops cyclops = new Cyclops();

@@ -1,4 +1,4 @@
-package entities;
+package campaign;
 
 public class UnitsStack {
     private Unit unit;

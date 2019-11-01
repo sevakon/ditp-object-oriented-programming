@@ -1,4 +1,7 @@
-package entities;
+package campaign;
+
+import specialties.*;
+import units.Type;
 
 import java.util.ArrayList;
 

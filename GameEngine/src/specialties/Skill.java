@@ -1,4 +1,4 @@
-package entities;
+package specialties;
 
 public enum Skill implements Specialty {
     SHOOTER("Shooter"),

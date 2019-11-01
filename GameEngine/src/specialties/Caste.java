@@ -1,4 +1,4 @@
-package entities;
+package specialties;
 
 public enum Caste implements Specialty {
     PUNISHING_SHOT("Punishing Shot"),
