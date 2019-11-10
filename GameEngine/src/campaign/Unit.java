@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Unit {
     private Type type;
-    private int hitPoints;
+    private int healthPoints;
     private int attack;
     private int defence;
     private int lowerDamage;
@@ -15,12 +15,12 @@ public class Unit {
     private double initiative;
     private Specialty specialties[];
 
-    public Unit(Type type, int hitPoints, int attack, int defence, int lowerDamage,
+    public Unit(Type type, int healthPoints, int attack, int defence, int lowerDamage,
                 int upperDamage, double initiative, Specialty[] specialties) {
         this.type = type;
         this.attack = attack;
         this.defence = defence;
-        this.hitPoints = hitPoints;
+        this.healthPoints = healthPoints;
         this.initiative = initiative;
         this.lowerDamage = lowerDamage;
         this.upperDamage = upperDamage;
@@ -31,8 +31,8 @@ public class Unit {
         return type;
     }
 
-    public int getHitPoints() {
-        return hitPoints;
+    public int getHealthPoints() {
+        return healthPoints;
     }
 
     public int getAttack() {
@@ -81,7 +81,7 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "type: " + type + ", attack: " + hitPoints + ", attack: " + attack + ", defence: " +
+        return "type: " + type + ", HP: " + healthPoints + ", attack: " + attack + ", defence: " +
                 defence + ", damage: " + lowerDamage + "-" + upperDamage + ", initiative " + initiative;
     }
 }

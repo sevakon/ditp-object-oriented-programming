@@ -1,5 +1,8 @@
 import campaign.*;
 import units.*;
+import battle.*;
+
+import java.util.ArrayList;
 
 public class Main {
 
@@ -30,20 +33,41 @@ public class Main {
         UnitsStack shamanStack = new UnitsStack(shaman, 1);
         UnitsStack skeletonStack = new UnitsStack(skeleton, 15);
 
-        // Armies
+//        // Armies
         Army army = new Army(hydraStack, skeletonStack);
         System.out.println(army);
 
-        //Get methods example
-        UnitsStack[] stacks = army.getStacks();
-        for (int i = 0; i < stacks.length; i++) {
-            if (stacks[i] != null) {
-                Unit unit = stacks[i].getUnit();
-                System.out.println(unit.getType());
-            }
-        }
+        ArrayList<Integer> l = new ArrayList<>(2);
+        l.add(1);
+        System.out.println(l);
+        l.add(2);
+        System.out.println(l);
+        l.add(3);
+        System.out.println(l);
+        l.add(4);
+        System.out.println(l);
 
-        System.out.print(skeleton.getCastes());
+//        BattleUnitsStack battleUnitsStack = new BattleUnitsStack(skeletonStack);
+//        System.out.println(battleUnitsStack);
+//        battleUnitsStack.takeDamage(8);
+//        System.out.println(battleUnitsStack);
+//        battleUnitsStack.takeDamage(8);
+//        System.out.println(battleUnitsStack);
+//        battleUnitsStack.heal(8);
+//        System.out.println(battleUnitsStack);
+
+
+
+//        //Get methods example
+//        UnitsStack[] stacks = army.getStacks();
+//        for (int i = 0; i < stacks.length; i++) {
+//            if (stacks[i] != null) {
+//                Unit unit = stacks[i].getUnit();
+//                System.out.println(unit.getType());
+//            }
+//        }
+//
+//        System.out.print(skeleton.getSkills());
     }
 
 }

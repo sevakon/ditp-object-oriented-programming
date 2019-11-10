@@ -9,6 +9,10 @@ public class UnitsStack {
         this.numberOfUnits = numberOfUnits;
     }
 
+    public UnitsStack(UnitsStack unitsStack) {
+        this(unitsStack.getUnit(), unitsStack.getNumberOfUnits());
+    }
+
     public Unit getUnit() {
         return unit;
     }
