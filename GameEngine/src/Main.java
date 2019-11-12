@@ -1,4 +1,5 @@
 import campaign.*;
+import campaign.exception.*;
 import units.*;
 import battle.*;
 
@@ -33,41 +34,29 @@ public class Main {
         UnitsStack shamanStack = new UnitsStack(shaman, 1);
         UnitsStack skeletonStack = new UnitsStack(skeleton, 15);
 
-//        // Armies
-        Army army = new Army(hydraStack, skeletonStack);
-        System.out.println(army);
+        Army firstArmy;
+        try {
+            firstArmy = new Army(lichStack, skeletonStack, devilStack, shamanStack);
+        } catch(StackSizeExceededException e) {
+            System.out.println(e);
+            firstArmy = new Army();
+        }
 
-        ArrayList<Integer> l = new ArrayList<>(2);
-        l.add(1);
-        System.out.println(l);
-        l.add(2);
-        System.out.println(l);
-        l.add(3);
-        System.out.println(l);
-        l.add(4);
-        System.out.println(l);
+        Army secondArmy;
+        try {
+            secondArmy = new Army(griffonStack, hydraStack, skeletonStack, shamanStack);
+        } catch(StackSizeExceededException e) {
+            System.out.println(e);
+            secondArmy = new Army();
+        }
 
-//        BattleUnitsStack battleUnitsStack = new BattleUnitsStack(skeletonStack);
-//        System.out.println(battleUnitsStack);
-//        battleUnitsStack.takeDamage(8);
-//        System.out.println(battleUnitsStack);
-//        battleUnitsStack.takeDamage(8);
-//        System.out.println(battleUnitsStack);
-//        battleUnitsStack.heal(8);
-//        System.out.println(battleUnitsStack);
+        BattleArmy firstBattleArmy = new BattleArmy(firstArmy);
+        BattleArmy secondBattleArmy = new BattleArmy(secondArmy);
 
+        Battle battle = new Battle(firstBattleArmy, secondBattleArmy);
 
-
-//        //Get methods example
-//        UnitsStack[] stacks = army.getStacks();
-//        for (int i = 0; i < stacks.length; i++) {
-//            if (stacks[i] != null) {
-//                Unit unit = stacks[i].getUnit();
-//                System.out.println(unit.getType());
-//            }
-//        }
-//
-//        System.out.print(skeleton.getSkills());
+        System.out.println(battle);
+        battle.nextTurn();
     }
 
 }

@@ -1,31 +1,32 @@
 package campaign;
 
-import campaign.exception.SizeExceededException;
-import javafx.css.Size;
+import campaign.exception.StackSizeExceededException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Army {
     private ArrayList<UnitsStack> stacks;
-    private static int MAX_STACKS_SIZE = 6;
+    private static int MAX_STACK_SIZE = 6;
 
-    public Army(ArrayList<UnitsStack> unitsStacks) throws SizeExceededException {
-        if (unitsStacks.size() > MAX_STACKS_SIZE) {
-            throw new SizeExceededException("Your Unit Stack Size exceeds maximal size");
-        }
+    public Army() {
+        stacks = new ArrayList<>();
+    }
+
+    public Army(ArrayList<UnitsStack> unitsStacks) throws StackSizeExceededException {
+        if (unitsStacks.size() > MAX_STACK_SIZE)
+            throw new StackSizeExceededException("Your Unit Stack Size exceeds maximal size");
         stacks = new ArrayList<>(unitsStacks);
     }
 
-    public Army(UnitsStack... unitsStacks) throws SizeExceededException {
-        if (unitsStacks.length > MAX_STACKS_SIZE) {
-            throw new SizeExceededException("Your Unit Stack Size exceeds maximal size");
-        }
+    public Army(UnitsStack... unitsStacks) throws StackSizeExceededException {
         stacks = new ArrayList<>();
+        if (unitsStacks.length > MAX_STACK_SIZE)
+            throw new StackSizeExceededException("Your Unit Stack Size exceeds maximal size");
         Collections.addAll(stacks, unitsStacks);
     }
 
-    public Army(Army army) throws SizeExceededException {
+    public Army(Army army) throws StackSizeExceededException {
         this(army.getStacks());
     }
 
