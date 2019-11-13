@@ -3,8 +3,6 @@ import campaign.exception.*;
 import units.*;
 import battle.*;
 
-import java.util.ArrayList;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -34,6 +32,9 @@ public class Main {
         UnitsStack shamanStack = new UnitsStack(shaman, 1);
         UnitsStack skeletonStack = new UnitsStack(skeleton, 15);
 
+        BattleUnitsStack skeletontBattleStack = new BattleUnitsStack(skeletonStack);
+        BattleUnitsStack furyBattleStack = new BattleUnitsStack(furyStack);
+
         Army firstArmy;
         try {
             firstArmy = new Army(lichStack, skeletonStack, devilStack, shamanStack);
@@ -51,12 +52,18 @@ public class Main {
         }
 
         BattleArmy firstBattleArmy = new BattleArmy(firstArmy);
-        BattleArmy secondBattleArmy = new BattleArmy(secondArmy);
+        BattleArmy secondBattleArmy;
+        try {
+            secondBattleArmy = new BattleArmy(furyBattleStack, skeletontBattleStack);
+        } catch (StackSizeExceededException e) {
+            System.out.println(e);
+            secondBattleArmy = new BattleArmy();
+        }
 
         Battle battle = new Battle(firstBattleArmy, secondBattleArmy);
 
         System.out.println(battle);
-        battle.nextTurn();
+        battle.playRound();
         battle.logCurrentStacksQueue();
     }
 

@@ -14,16 +14,19 @@ public class Army {
     }
 
     public Army(ArrayList<UnitsStack> unitsStacks) throws StackSizeExceededException {
-        if (unitsStacks.size() > MAX_STACK_SIZE)
-            throw new StackSizeExceededException("Your Unit Stack Size exceeds maximal size");
+        checkSize(unitsStacks.size());
         stacks = new ArrayList<>(unitsStacks);
     }
 
     public Army(UnitsStack... unitsStacks) throws StackSizeExceededException {
+        checkSize(unitsStacks.length);
         stacks = new ArrayList<>();
-        if (unitsStacks.length > MAX_STACK_SIZE)
-            throw new StackSizeExceededException("Your Unit Stack Size exceeds maximal size");
         Collections.addAll(stacks, unitsStacks);
+    }
+
+    private void checkSize(int size) throws StackSizeExceededException {
+        if (size > MAX_STACK_SIZE)
+            throw new StackSizeExceededException("Your Unit Stack Size exceeds maximal size");
     }
 
     public Army(Army army) throws StackSizeExceededException {

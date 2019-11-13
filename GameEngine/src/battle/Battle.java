@@ -1,18 +1,18 @@
 package battle;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Comparator;
 
 public class Battle {
     private BattleArmy firstArmy;
     private BattleArmy secondArmy;
-    private ArrayList<BattleUnitsStack> stacksSortedByInitiative;
+    private LinkedList<BattleUnitsStack> stacksSortedByInitiative;
     private Status status;
 
     public Battle(BattleArmy firstArmy, BattleArmy secondArmy) {
         this.firstArmy = firstArmy;
         this.secondArmy = secondArmy;
-        this.stacksSortedByInitiative = new ArrayList<>();
+        this.stacksSortedByInitiative = new LinkedList<>();
         this.firstArmy.getStacks().forEach(stack -> {
             stacksSortedByInitiative.add(stack);
             stack.setBattleSide(BattleSide.FIRST_ARMY);
@@ -25,17 +25,29 @@ public class Battle {
         this.status = Status.IN_ACTION;
     }
 
-    public void nextTurn() {
-        System.out.println(stacksSortedByInitiative);
+    public void playRound() {
+        LinkedList<BattleUnitsStack> usedStacks = new LinkedList<>();
+        while (stacksSortedByInitiative.size() > 0) {
+            BattleUnitsStack currentUnit = stacksSortedByInitiative.removeFirst();
+            // if wait
+            //    stacksSortedByInitiative.add(currentUnit);
+            // else
+            //    usedStacks.add(currentUnit);
+            // logCurrentStacksQueue();
+        }
     }
 
     public void logCurrentStacksQueue() {
         for (BattleUnitsStack stack: stacksSortedByInitiative) {
-            System.out.println(stack.getUnit().getType() + "; Initiative: " + stack.getUnit().getInitiative()
-                + "; Side: " + stack.getBattleSide());
+            System.out.println(stack.getUnit().getType() + "; Initiative: " +
+                    stack.getUnit().getInitiative() + "; Side: " + stack.getBattleSide());
         }
     }
 
+    /**
+     * Sorting doubly-linked list of stacks by
+     * unit initiative in O(n^2) time-complexity
+     */
     private void sortByInitiative() {
         Comparator<BattleUnitsStack> initiativeComparator = (s1, s2) -> Double.compare(
                 s2.getUnit().getInitiative(), s1.getUnit().getInitiative());
