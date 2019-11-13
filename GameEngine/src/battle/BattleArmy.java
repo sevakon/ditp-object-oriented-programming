@@ -24,7 +24,7 @@ public class BattleArmy {
         }
     }
 
-    public BattleArmy(ArrayList<BattleUnitsStack> battleStacks) throws StackSizeExceededException{
+    public BattleArmy(ArrayList<BattleUnitsStack> battleStacks) throws StackSizeExceededException {
         checkNewSize(battleStacks.size());
         stacks = new ArrayList<>(battleStacks);
     }
