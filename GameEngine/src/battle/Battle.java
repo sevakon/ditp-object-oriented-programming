@@ -13,8 +13,14 @@ public class Battle {
         this.firstArmy = firstArmy;
         this.secondArmy = secondArmy;
         this.stacksSortedByInitiative = new ArrayList<>();
-        this.firstArmy.getStacks().forEach(stack -> stacksSortedByInitiative.add(stack));
-        this.secondArmy.getStacks().forEach(stack -> stacksSortedByInitiative.add(stack));
+        this.firstArmy.getStacks().forEach(stack -> {
+            stacksSortedByInitiative.add(stack);
+            stack.setBattleSide(BattleSide.FIRST_ARMY);
+        });
+        this.secondArmy.getStacks().forEach(stack -> {
+            stacksSortedByInitiative.add(stack);
+            stack.setBattleSide(BattleSide.SECOND_ARMY);
+        });
         sortByInitiative();
         this.status = Status.IN_ACTION;
     }
@@ -23,9 +29,16 @@ public class Battle {
         System.out.println(stacksSortedByInitiative);
     }
 
+    public void logCurrentStacksQueue() {
+        for (BattleUnitsStack stack: stacksSortedByInitiative) {
+            System.out.println(stack.getUnit().getType() + "; Initiative: " + stack.getUnit().getInitiative()
+                + "; Side: " + stack.getBattleSide());
+        }
+    }
+
     private void sortByInitiative() {
         Comparator<BattleUnitsStack> initiativeComparator = (s1, s2) -> Double.compare(
-                s1.getUnit().getInitiative(), s2.getUnit().getInitiative());
+                s2.getUnit().getInitiative(), s1.getUnit().getInitiative());
         this.stacksSortedByInitiative.sort(initiativeComparator);
     }
 

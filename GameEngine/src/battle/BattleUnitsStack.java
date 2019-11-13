@@ -6,6 +6,7 @@ public class BattleUnitsStack extends UnitsStack {
     private int numberOfAliveUnits;
     private int numberOfDeadUnits;
     private int healthPoints;
+    private BattleSide battleSide;
 
     public BattleUnitsStack(UnitsStack unitsStack) {
         super(unitsStack);
@@ -40,6 +41,14 @@ public class BattleUnitsStack extends UnitsStack {
 
     private int numberOfAliveUnitsAfterHPChange() {
         return (int) Math.ceil((double) healthPoints/(double) getUnit().getHealthPoints());
+    }
+
+    public void setBattleSide(BattleSide battleSide) {
+        this.battleSide = battleSide;
+    }
+
+    public BattleSide getBattleSide() {
+        return battleSide;
     }
 
     @Override
