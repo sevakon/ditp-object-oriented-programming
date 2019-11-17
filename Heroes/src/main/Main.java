@@ -1,7 +1,8 @@
 package main;
 
 import main.engine.campaign.*;
-import main.engine.exception.StackSizeExceededException;
+import main.engine.exception.*;
+import main.engine.specialties.*;
 import main.engine.units.*;
 import main.engine.battle.*;
 
@@ -34,8 +35,13 @@ public class Main {
         UnitsStack shamanStack = new UnitsStack(shaman, 1);
         UnitsStack skeletonStack = new UnitsStack(skeleton, 15);
 
-        BattleUnitsStack skeletontBattleStack = new BattleUnitsStack(skeletonStack);
+        BattleUnitsStack skeletonBattleStack = new BattleUnitsStack(skeletonStack);
         BattleUnitsStack furyBattleStack = new BattleUnitsStack(furyStack);
+
+        skeletonBattleStack.addDefence(100);
+        skeletonBattleStack.subtractDefence(100);
+        skeletonBattleStack.subtractDefence(200);
+
 
         Army firstArmy;
         try {
@@ -56,17 +62,15 @@ public class Main {
         BattleArmy firstBattleArmy = new BattleArmy(firstArmy);
         BattleArmy secondBattleArmy;
         try {
-            secondBattleArmy = new BattleArmy(furyBattleStack, skeletontBattleStack);
+            secondBattleArmy = new BattleArmy(furyBattleStack, skeletonBattleStack);
         } catch (StackSizeExceededException e) {
             System.out.println(e);
             secondBattleArmy = new BattleArmy();
         }
 
         Battle battle = new Battle(firstBattleArmy, secondBattleArmy);
-
         System.out.println(battle);
-        battle.playRound();
-        battle.logCurrentStacksQueue();
+
     }
 
 }

@@ -59,23 +59,21 @@ public class Unit {
         return specialties;
     }
 
-    public ArrayList<Specialty> getCastes() {
-        ArrayList<Specialty> castes = new ArrayList<>();
-        for (Specialty specialty: specialties) {
-            if (specialty instanceof Caste) {
-                castes.add(specialty);
-            }
-        }
+    public ArrayList<Caste> getCastes() {
+        ArrayList<Caste> castes = new ArrayList<>();
+        for (Specialty specialty: specialties)
+            if (specialty instanceof Caste)
+                castes.add((Caste) specialty);
+
         return castes;
     }
 
-    public ArrayList<Specialty> getSkills() {
-        ArrayList<Specialty> skills = new ArrayList<>();
-        for (Specialty specialty: specialties) {
-            if (specialty instanceof Skill) {
-                skills.add(specialty);
-            }
-        }
+    public ArrayList<Skill> getSkills() {
+        ArrayList<Skill> skills = new ArrayList<>();
+        for (Specialty specialty: specialties)
+            if (specialty instanceof Skill)
+                skills.add((Skill) specialty);
+
         return skills;
     }
 

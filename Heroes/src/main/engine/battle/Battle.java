@@ -1,7 +1,6 @@
 package main.engine.battle;
 
 import java.util.LinkedList;
-import java.util.Comparator;
 
 public class Battle {
     private BattleArmy firstArmy;
@@ -40,7 +39,7 @@ public class Battle {
     public void logCurrentStacksQueue() {
         for (BattleUnitsStack stack: stacksSortedByInitiative) {
             System.out.println(stack.getUnit().getType() + "; Initiative: " +
-                    stack.getUnit().getInitiative() + "; Side: " + stack.getBattleSide());
+                    stack.getBattleInitiative() + "; Side: " + stack.getBattleSide());
         }
     }
 
@@ -49,9 +48,8 @@ public class Battle {
      * unit initiative in O(n^2) time-complexity
      */
     private void sortByInitiative() {
-        Comparator<BattleUnitsStack> initiativeComparator = (s1, s2) -> Double.compare(
-                s2.getUnit().getInitiative(), s1.getUnit().getInitiative());
-        this.stacksSortedByInitiative.sort(initiativeComparator);
+    this.stacksSortedByInitiative.sort((s1, s2) -> Double.compare(
+            s2.getBattleInitiative(), s1.getBattleInitiative()));
     }
 
     public Status getStatus() {
@@ -68,7 +66,7 @@ public class Battle {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Battle Info: \n");
+        StringBuilder stringBuilder = new StringBuilder("Battle Info: \n\n");
         stringBuilder.append("First Army: \n");
         stringBuilder.append(firstArmy + "\n");
         stringBuilder.append("Second Army: \n");
