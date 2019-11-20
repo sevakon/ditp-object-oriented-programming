@@ -12,7 +12,7 @@ public class BattleUnitsStack extends UnitsStack {
     private int extraAttack = 0;
     private int extraDefence = 0;
     private double extraInitiative = 0.0;
-    private ArrayList<Caste> availableCastes;
+    private ArrayList<Cast> availableCasts;
     private BattleSide battleSide;
 
     /**
@@ -24,7 +24,7 @@ public class BattleUnitsStack extends UnitsStack {
         numberOfAliveUnits = getNumberOfUnits();
         numberOfDeadUnits = 0;
         healthPoints = numberOfAliveUnits * getUnit().getHealthPoints();
-        availableCastes = getUnit().getCastes();
+        availableCasts = getUnit().getCastes();
     }
 
     /**
@@ -39,6 +39,8 @@ public class BattleUnitsStack extends UnitsStack {
 
     public void subtractHealthPoints(int healthPoints) {
         this.healthPoints -= healthPoints;
+        if (this.healthPoints < 0)
+            this.healthPoints = 0;
         int newNumberOfAliveUnits = numberOfAliveUnitsAfterHPChange();
         numberOfDeadUnits += numberOfAliveUnits - newNumberOfAliveUnits;
         numberOfAliveUnits = newNumberOfAliveUnits;
@@ -148,12 +150,12 @@ public class BattleUnitsStack extends UnitsStack {
         return getUnit().getSkills();
     }
 
-    public ArrayList<Caste> getAvailableCastes() {
-        return availableCastes;
+    public ArrayList<Cast> getAvailableCasts() {
+        return availableCasts;
     }
 
-    public void removeCaste(Caste caste) {
-        availableCastes.remove(caste);
+    public void removeCaste(Cast cast) {
+        availableCasts.remove(cast);
     }
 
     /**
@@ -193,6 +195,6 @@ public class BattleUnitsStack extends UnitsStack {
                 " + Extra: " + getExtraDefence() + "\nInitiative: " +
                 getBattleInitiative() + " = Base: " + getBaseInitiative() +
                 " + Extra: " + getExtraInitiative() + "\nSkills: " +
-                getAvailableSkills() + "\nCastes: " + getAvailableCastes() + "\n";
+                getAvailableSkills() + "\nCastes: " + getAvailableCasts() + "\n";
     }
 }

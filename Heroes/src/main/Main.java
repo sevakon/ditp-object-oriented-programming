@@ -37,10 +37,8 @@ public class Main {
 
         BattleUnitsStack skeletonBattleStack = new BattleUnitsStack(skeletonStack);
         BattleUnitsStack furyBattleStack = new BattleUnitsStack(furyStack);
-
-        skeletonBattleStack.addDefence(100);
-        skeletonBattleStack.subtractDefence(100);
-        skeletonBattleStack.subtractDefence(200);
+        BattleUnitsStack angelBattleStack = new BattleUnitsStack(angelStack);
+        BattleUnitsStack crossbowBattleStack = new BattleUnitsStack(crossbowStack);
 
 
         Army firstArmy;
@@ -53,7 +51,7 @@ public class Main {
 
         Army secondArmy;
         try {
-            secondArmy = new Army(griffonStack, hydraStack, skeletonStack, shamanStack);
+            secondArmy = new Army(griffonStack, hydraStack, crossbowStack, cyclopsStack);
         } catch(StackSizeExceededException e) {
             System.out.println(e);
             secondArmy = new Army();
@@ -69,8 +67,18 @@ public class Main {
         }
 
         Battle battle = new Battle(firstBattleArmy, secondBattleArmy);
-        System.out.println(battle);
-
+        battle.logCurrentStacksQueue();
+        BattleUnitsStack nextStack;
+        try {
+            nextStack = battle.getNextStack();
+            System.out.println(nextStack);
+            BattleUnitsStack targetStack = battle.getFirstArmy().getStacks().get(0);
+            System.out.println(targetStack);
+            battle.performAttack(nextStack, targetStack);
+            System.out.println(targetStack);
+        } catch(Exception e) {
+            System.out.println(e);
+        }
     }
 
 }

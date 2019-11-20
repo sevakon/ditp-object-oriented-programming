@@ -59,11 +59,11 @@ public class Unit {
         return specialties;
     }
 
-    public ArrayList<Caste> getCastes() {
-        ArrayList<Caste> castes = new ArrayList<>();
+    public ArrayList<Cast> getCastes() {
+        ArrayList<Cast> castes = new ArrayList<>();
         for (Specialty specialty: specialties)
-            if (specialty instanceof Caste)
-                castes.add((Caste) specialty);
+            if (specialty instanceof Cast)
+                castes.add((Cast) specialty);
 
         return castes;
     }
