@@ -1,7 +1,6 @@
 package main.engine.battle;
 
-import main.engine.battle.exception.BattleAlreadyHasStackAwaitingActionException;
-import main.engine.battle.exception.PerformingStackDoesNotMatchException;
+import main.engine.battle.exception.*;
 import main.engine.specialties.*;
 
 import java.util.LinkedList;
@@ -13,13 +12,10 @@ import java.util.Random;
  */
 public class Battle {
     private Status status;
+    private BattleQueue queue;
     private BattleArmy firstArmy;
     private BattleArmy secondArmy;
-    private int numberOfRoundsPlayed = 0;
-
     private BattleUnitsStack currentStack = null;
-    private LinkedList<BattleUnitsStack> madeActionStacks;
-    private LinkedList<BattleUnitsStack> stacksSortedByInitiative;
 
     /**
      * Battle Constructor
@@ -30,17 +26,7 @@ public class Battle {
     public Battle(BattleArmy firstArmy, BattleArmy secondArmy) {
         this.firstArmy = firstArmy;
         this.secondArmy = secondArmy;
-        this.stacksSortedByInitiative = new LinkedList<>();
-        this.madeActionStacks = new LinkedList<>();
-        this.firstArmy.getStacks().forEach(stack -> {
-            stacksSortedByInitiative.add(stack);
-            stack.setBattleSide(BattleSide.FIRST_ARMY);
-        });
-        this.secondArmy.getStacks().forEach(stack -> {
-            stacksSortedByInitiative.add(stack);
-            stack.setBattleSide(BattleSide.SECOND_ARMY);
-        });
-        sortByInitiative();
+        this.queue = new BattleQueue(firstArmy, secondArmy);
         this.status = Status.IN_ACTION;
     }
 
@@ -53,101 +39,89 @@ public class Battle {
      */
     public BattleUnitsStack getNextStack() throws Exception {
         checkIfBattleHasCurrentStack();
-        if (stacksSortedByInitiative.size() == 0)
-            roundFinished();
-        updateBattleStatus();
-        currentStack = stacksSortedByInitiative.removeFirst();
+        currentStack = queue.poll();
         return currentStack;
     }
 
-    public void performAttack(BattleUnitsStack attackingStack, BattleUnitsStack targetStack) throws Exception {
-        checkPerformingActionStack(attackingStack);
-        if (attackingStack.getAvailableSkills().contains(Skill.ACCURATE_SHOT)) {
-            attack(attackingStack, targetStack, true);
-        } else if (attackingStack.getAvailableSkills().contains(Skill.SHOT_TO_ALL)) {
-            if (attackingStack.getBattleSide() == BattleSide.FIRST_ARMY)
-                getSecondArmy().getStacks().forEach(defendingStack -> attack(attackingStack, defendingStack, false));
+    public void performAttack(BattleUnitsStack targetStack) throws Exception {
+        checkIfBattleDoesNotHaveCurrentStack();
+        if (currentStack.getAvailableSkills().contains(Skill.ACCURATE_SHOT)) {
+            attack(currentStack, targetStack, true);
+        } else if (currentStack.getAvailableSkills().contains(Skill.SHOT_TO_ALL)) {
+            if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
+                getSecondArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
             else
-                getFirstArmy().getStacks().forEach(defendingStack -> attack(attackingStack, defendingStack, false));
+                getFirstArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
         } else {
-            attack(attackingStack, targetStack, false);
+            attack(currentStack, targetStack, false);
         }
-        madeActionStacks.add(attackingStack);
+        queue.addToMadeActions(currentStack);
+        currentStack = null;
+        updateBattleStatus();
+    }
+
+    public void performDefence() throws Exception {
+        checkIfBattleDoesNotHaveCurrentStack();
+        defence(currentStack);
+        queue.addToMadeActions(currentStack);
         currentStack = null;
     }
 
-    public void performDefence(BattleUnitsStack battleUnitsStack) throws Exception {
-        checkPerformingActionStack(battleUnitsStack);
-        defence(battleUnitsStack);
-        madeActionStacks.add(battleUnitsStack);
-        currentStack = null;
-    }
-
-    public void performCast(BattleUnitsStack stack, Cast cast, BattleUnitsStack targetStack) throws Exception {
-        checkPerformingActionStack(stack);
+    public void performCast(BattleUnitsStack targetStack, Cast cast) throws Exception {
+        checkIfBattleDoesNotHaveCurrentStack();
         // raise exception if unit does not have this cast
-        stack.getAvailableCasts().remove(cast);
+        currentStack.getAvailableCasts().remove(cast);
         // perform cast
-        madeActionStacks.add(stack);
+        queue.addToMadeActions(currentStack);
         currentStack = null;
+        updateBattleStatus();
     }
 
-    public void performWait(BattleUnitsStack battleUnitsStack) throws Exception {
-        checkPerformingActionStack(battleUnitsStack);
-        stacksSortedByInitiative.add(battleUnitsStack);
+    public void performWait() throws Exception {
+        checkIfBattleDoesNotHaveCurrentStack();
+        queue.addToWaiting(currentStack);
         currentStack = null;
     }
 
     public void performSurrender(BattleUnitsStack battleUnitsStack) throws Exception {
-        checkPerformingActionStack(battleUnitsStack);
+        checkIfBattleDoesNotHaveCurrentStack();
         if (battleUnitsStack.getBattleSide() == BattleSide.FIRST_ARMY)
             status = Status.SECOND_ARMY_WON;
         else
             status = Status.FIRST_ARMY_WON;
-        madeActionStacks.add(battleUnitsStack);
+        queue.addToMadeActions(battleUnitsStack);
         currentStack = null;
     }
 
     /**
-     * private checkers
+     * Exceptions Raising 
      */
-    private void checkPerformingActionStack(BattleUnitsStack performingActionStack)
-            throws PerformingStackDoesNotMatchException {
-        if (performingActionStack != currentStack)
-            throw new PerformingStackDoesNotMatchException();
-    }
-
-    private void checkIfBattleHasCurrentStack() throws BattleAlreadyHasStackAwaitingActionException {
+    private void checkIfBattleHasCurrentStack() throws Exception {
         if (currentStack != null)
             throw new BattleAlreadyHasStackAwaitingActionException();
     }
 
+    private void checkIfBattleDoesNotHaveCurrentStack() throws Exception {
+        if (currentStack == null)
+            throw new BattleDoesNotHaveStackAwaitingActionException();
+    }
+
     /**
-     * private methods for Battle Handling
+     * Private methods for Battle Controlling
      */
-    private void roundFinished() {
-        numberOfRoundsPlayed += 1;
-        stacksSortedByInitiative = madeActionStacks;
-        madeActionStacks.clear();
-        removeDeadStacks();
-        sortByInitiative();
-    }
-
-    private void removeDeadStacks() {
-        stacksSortedByInitiative.forEach(stack -> {
-            if (stack.getHealthPoints() < 0) stacksSortedByInitiative.remove(stack);
-        });
-    }
-
     private void updateBattleStatus() {
-        Boolean allFirstArmyStacksDead = true;
-        Boolean allSecondArmyStacksDead = true;
-        for (BattleUnitsStack stack : stacksSortedByInitiative) {
-            if (stack.getBattleSide() == BattleSide.FIRST_ARMY)
+        boolean allFirstArmyStacksDead = true;
+        boolean allSecondArmyStacksDead = true;
+        for (BattleUnitsStack stack : firstArmy.getStacks())
+            if (stack.getHealthPoints() != 0) {
                 allFirstArmyStacksDead = false;
-            else
-                allSecondArmyStacksDead = false;
-        }
+                break;
+            }
+        for (BattleUnitsStack stack : secondArmy.getStacks())
+            if (stack.getHealthPoints() != 0) {
+                allFirstArmyStacksDead = false;
+                break;
+            }
         if (allFirstArmyStacksDead) status = Status.SECOND_ARMY_WON;
         if (allSecondArmyStacksDead) status = Status.FIRST_ARMY_WON;
     }
@@ -174,29 +148,12 @@ public class Battle {
         battleUnitsStack.addDefence(defenceToAdd);
     }
 
-    public void logCurrentStacksQueue() {
-        for (BattleUnitsStack stack: stacksSortedByInitiative) {
-            System.out.println(stack.getUnit().getType() + "; Initiative: " +
-                    stack.getBattleInitiative() + "; Side: " + stack.getBattleSide());
-        }
-        System.out.print('\n');
-    }
-
-    /**
-     * Sorting doubly-linked list of stacks by
-     * unit initiative in O(n^2) time-complexity
-     */
-    private void sortByInitiative() {
-    this.stacksSortedByInitiative.sort((s1, s2) -> Double.compare(
-            s2.getBattleInitiative(), s1.getBattleInitiative()));
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public int getNumberOfRoundsPlayed() {
-        return numberOfRoundsPlayed;
+        return queue.getNumberOfRearrangements();
     }
 
     public BattleArmy getFirstArmy() {
@@ -215,7 +172,7 @@ public class Battle {
         stringBuilder.append("Second Army: \n");
         stringBuilder.append(secondArmy + "\n");
         stringBuilder.append(status + "\n");
-        stringBuilder.append("Rounds: " + numberOfRoundsPlayed + "\n");
+        stringBuilder.append("Rounds: " + getNumberOfRoundsPlayed() + "\n");
         return stringBuilder.toString();
     }
 

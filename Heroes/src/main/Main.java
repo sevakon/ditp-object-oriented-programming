@@ -67,14 +67,13 @@ public class Main {
         }
 
         Battle battle = new Battle(firstBattleArmy, secondBattleArmy);
-        battle.logCurrentStacksQueue();
         BattleUnitsStack nextStack;
         try {
             nextStack = battle.getNextStack();
             System.out.println(nextStack);
             BattleUnitsStack targetStack = battle.getFirstArmy().getStacks().get(0);
             System.out.println(targetStack);
-            battle.performAttack(nextStack, targetStack);
+            battle.performAttack(targetStack);
             System.out.println(targetStack);
         } catch(Exception e) {
             System.out.println(e);
