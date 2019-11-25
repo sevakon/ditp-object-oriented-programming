@@ -94,7 +94,7 @@ public class Battle {
     }
 
     /**
-     * Exceptions Raising 
+     * Exceptions Raising
      */
     private void checkIfBattleHasCurrentStack() throws Exception {
         if (currentStack != null)
@@ -144,7 +144,7 @@ public class Battle {
     }
 
     private static void defence(BattleUnitsStack battleUnitsStack) {
-        int defenceToAdd = (int) (0.4 * battleUnitsStack.getBattleDefence());
+        int defenceToAdd = (int) (0.3 * battleUnitsStack.getBattleDefence());
         battleUnitsStack.addDefence(defenceToAdd);
     }
 
