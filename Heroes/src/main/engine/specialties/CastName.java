@@ -1,6 +1,6 @@
 package main.engine.specialties;
 
-public enum Cast implements Specialty {
+public enum CastName implements SpecialtyName {
     PUNISHING_SHOT("Punishing Shot"),
     MALEDICTION("Malediction"),
     WEAKENING("Wakening"),
@@ -8,7 +8,7 @@ public enum Cast implements Specialty {
     REINCARNATION("Reincarnation");
 
     String stringRepresentation;
-    Cast(String stringRepresentation) {
+    CastName(String stringRepresentation) {
         this.stringRepresentation =  stringRepresentation;
     }
 

@@ -1,7 +1,8 @@
 package main.engine.battle;
 
+import main.engine.campaign.Cast;
+import main.engine.campaign.Skill;
 import main.engine.campaign.UnitsStack;
-import main.engine.specialties.*;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ public class BattleUnitsStack extends UnitsStack {
     private int numberOfAliveUnits;
     private int numberOfDeadUnits;
     private int healthPoints;
+    private int maxHealthPoints;
     private int extraAttack = 0;
     private int extraDefence = 0;
     private double extraInitiative = 0.0;
@@ -24,7 +26,20 @@ public class BattleUnitsStack extends UnitsStack {
         numberOfAliveUnits = getNumberOfUnits();
         numberOfDeadUnits = 0;
         healthPoints = numberOfAliveUnits * getUnit().getHealthPoints();
+        maxHealthPoints = healthPoints;
         availableCasts = getUnit().getCastes();
+    }
+
+    /**
+     * BattleUnitsStack Clone constructor
+     */
+    public BattleUnitsStack(BattleUnitsStack battleUnitsStack) {
+        super(battleUnitsStack.getUnit(), battleUnitsStack.getNumberOfUnits());
+        numberOfAliveUnits = battleUnitsStack.numberOfAliveUnits;
+        numberOfDeadUnits = battleUnitsStack.numberOfDeadUnits;
+        healthPoints = battleUnitsStack.healthPoints;
+        maxHealthPoints = battleUnitsStack.maxHealthPoints;
+        availableCasts = battleUnitsStack.availableCasts;
     }
 
     /**
@@ -33,6 +48,8 @@ public class BattleUnitsStack extends UnitsStack {
      * recalculates number of dead and alive units
      */
     public void addHealthPoints(int healthPoints) {
+        if (this.healthPoints + healthPoints > maxHealthPoints)
+            healthPoints = maxHealthPoints - this.healthPoints;
         this.healthPoints += healthPoints;
         numberOfAliveUnits = numberOfAliveUnitsAfterHPChange();
     }
@@ -154,8 +171,48 @@ public class BattleUnitsStack extends UnitsStack {
         return availableCasts;
     }
 
-    public void removeCaste(Cast cast) {
+    public void takeCast(Cast cast) {
+        addAttack(cast.getAttackToAdd());
+        subtractAttack(cast.getAttackToSubtract());
+        addDefence(cast.getDefenceToAdd());
+        subtractDefence(cast.getDefenceToSubtract());
+        addInitiative(cast.getInitiativeToAdd());
+        subtractInitiative(cast.getInitiativeToSubtract());
+
+        int newBattleAttack = (int) (cast.getAttackMultiplier() * getBattleAttack());
+        int attackDifference = newBattleAttack - getBattleAttack();
+        if (attackDifference > 0)
+            addAttack(attackDifference);
+        else if (attackDifference < 0)
+            subtractAttack(-attackDifference);
+
+        int newBattleDefence = (int) (cast.getDefenceMultiplier() * getBattleDefence());
+        int defenceDifference = newBattleDefence - getBattleDefence();
+        if (defenceDifference > 0)
+            addDefence(defenceDifference);
+        else if (defenceDifference < 0)
+            subtractDefence(-defenceDifference);
+
+        double newBattleInitiative = cast.getInitiativeMultiplier() * getBattleInitiative();
+        double initiativeDifference = newBattleInitiative - getBattleInitiative();
+        if (initiativeDifference > 0)
+            addInitiative(initiativeDifference);
+        else if (initiativeDifference < 0)
+            subtractInitiative(-initiativeDifference);
+
+        addHealthPoints(cast.getHealthPointsToAdd());
+    }
+
+    public void removeCast(Cast cast) {
         availableCasts.remove(cast);
+    }
+
+    public boolean doesHaveCast(Cast targetStack) {
+        for (Cast cast : getAvailableCasts())
+            if (cast == targetStack)
+                return true;
+
+        return false;
     }
 
     /**

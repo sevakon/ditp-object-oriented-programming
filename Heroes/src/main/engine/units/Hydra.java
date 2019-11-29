@@ -1,11 +1,12 @@
 package main.engine.units;
 
-import main.engine.specialties.*;
-import main.engine.campaign.Unit;
+import main.engine.campaign.*;
+import main.engine.specialties.casts.*;
+import main.engine.specialties.skills.*;
 
 public class Hydra extends Unit {
 
     public Hydra() {
-        super(Type.HYDRA, 80, 15, 12, 7, 14, 7, new Specialty[]{Skill.SHOT_TO_ALL, Skill.ENEMY_NO_RESIST});
+        super(Type.HYDRA, 80, 15, 12, 7, 14, 7, new Specialty[]{new ShotToAll(), new EnemyNoResist()});
     }
 }

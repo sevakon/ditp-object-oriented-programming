@@ -1,5 +1,5 @@
 package main.engine.specialties;
 
-public interface Specialty {
+public interface SpecialtyName {
     public String getStringRepresentation();
 }

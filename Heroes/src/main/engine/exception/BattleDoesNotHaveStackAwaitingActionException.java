@@ -1,4 +1,4 @@
-package main.engine.battle.exception;
+package main.engine.exception;
 
 public class BattleDoesNotHaveStackAwaitingActionException extends Exception {
     public BattleDoesNotHaveStackAwaitingActionException() {

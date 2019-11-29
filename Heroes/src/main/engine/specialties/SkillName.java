@@ -1,6 +1,6 @@
 package main.engine.specialties;
 
-public enum Skill implements Specialty {
+public enum SkillName implements SpecialtyName {
     SHOOTER("Shooter"),
     ACCURATE_SHOT("Accurate Shot"),
     UNDEAD("Undead"),
@@ -9,7 +9,7 @@ public enum Skill implements Specialty {
     ENDLESS_REBUFF("Endless Rebuff");
 
     String stringRepresentation;
-    Skill(String stringRepresentation) {
+    SkillName(String stringRepresentation) {
         this.stringRepresentation = stringRepresentation;
     }
 

@@ -1,11 +1,12 @@
 package main.engine.units;
 
-import main.engine.specialties.*;
-import main.engine.campaign.Unit;
+import main.engine.campaign.*;
+import main.engine.specialties.casts.*;
+import main.engine.specialties.skills.*;
 
 public class Cyclops extends Unit {
 
     public Cyclops() {
-        super(Type.CYCLOPS, 85, 20, 15, 18, 26, 10, new Specialty[]{Skill.SHOOTER});
+        super(Type.CYCLOPS, 85, 20, 15, 18, 26, 10, new Specialty[]{new Shooter()});
     }
 }

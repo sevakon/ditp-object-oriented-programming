@@ -43,7 +43,7 @@ public class Main {
 
         Army firstArmy;
         try {
-            firstArmy = new Army(lichStack, skeletonStack, devilStack, shamanStack);
+            firstArmy = new Army(lichStack, devilStack, shamanStack);
         } catch(StackSizeExceededException e) {
             System.out.println(e);
             firstArmy = new Army();
@@ -71,13 +71,16 @@ public class Main {
         try {
             nextStack = battle.getNextStack();
             System.out.println(nextStack);
-            BattleUnitsStack targetStack = battle.getFirstArmy().getStacks().get(0);
-            System.out.println(targetStack);
-            battle.performAttack(targetStack);
-            System.out.println(targetStack);
+            battle.performAttack(battle.getFirstArmy().getStacks().get(0));
+            nextStack = battle.getNextStack();
+            System.out.println(nextStack);
+            battle.performCast(nextStack, nextStack.getAvailableCasts().get(0));
+            System.out.println(nextStack);
         } catch(Exception e) {
             System.out.println(e);
         }
+        System.out.println(battle.getStatus());
+
     }
 
 }

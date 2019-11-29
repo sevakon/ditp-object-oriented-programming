@@ -1,6 +1,5 @@
 package main.engine.campaign;
 
-import main.engine.specialties.*;
 import main.engine.units.Type;
 
 import java.util.ArrayList;

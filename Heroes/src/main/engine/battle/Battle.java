@@ -1,10 +1,10 @@
 package main.engine.battle;
 
-import main.engine.battle.exception.*;
+import java.util.Random;
+import main.engine.campaign.*;
+import main.engine.exception.*;
 import main.engine.specialties.*;
 
-import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * Battle Class
@@ -20,8 +20,8 @@ public class Battle {
     /**
      * Battle Constructor
      * Requires two BattleArmies
-     * @param firstArmy
-     * @param secondArmy
+     * @param firstArmy first BattleArmy
+     * @param secondArmy second BattleArmy
      */
     public Battle(BattleArmy firstArmy, BattleArmy secondArmy) {
         this.firstArmy = firstArmy;
@@ -38,16 +38,23 @@ public class Battle {
      * playing stack's action
      */
     public BattleUnitsStack getNextStack() throws Exception {
-        checkIfBattleHasCurrentStack();
+        checkIfBattleIsOver();
+        checkCurrentStackPresence(false);
         currentStack = queue.poll();
         return currentStack;
     }
 
     public void performAttack(BattleUnitsStack targetStack) throws Exception {
-        checkIfBattleDoesNotHaveCurrentStack();
-        if (currentStack.getAvailableSkills().contains(Skill.ACCURATE_SHOT)) {
+        checkCurrentStackPresence(true);
+        if (currentStack.getAvailableSkills().
+                stream().
+                filter(skill -> skill.getName() == SkillName.ACCURATE_SHOT).
+                count() > 0) {
             attack(currentStack, targetStack, true);
-        } else if (currentStack.getAvailableSkills().contains(Skill.SHOT_TO_ALL)) {
+        } else if (currentStack.getAvailableSkills().
+                    stream().
+                    filter(skill -> skill.getName() == SkillName.SHOT_TO_ALL).
+                    count() > 0) {
             if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
                 getSecondArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
             else
@@ -61,49 +68,69 @@ public class Battle {
     }
 
     public void performDefence() throws Exception {
-        checkIfBattleDoesNotHaveCurrentStack();
+        checkCurrentStackPresence(true);
         defence(currentStack);
         queue.addToMadeActions(currentStack);
         currentStack = null;
     }
 
     public void performCast(BattleUnitsStack targetStack, Cast cast) throws Exception {
-        checkIfBattleDoesNotHaveCurrentStack();
-        // raise exception if unit does not have this cast
-        currentStack.getAvailableCasts().remove(cast);
-        // perform cast
+        checkCurrentStackPresence(true);
+        checkIfCurrentStackHasCast(cast);
+        if (cast.getName() == CastName.REINCARNATION)
+            cast.multiplyHealthPointsToAdd(targetStack.getNumberOfAliveUnits());
+        targetStack.takeCast(cast);
+        currentStack.removeCast(cast);
         queue.addToMadeActions(currentStack);
         currentStack = null;
         updateBattleStatus();
     }
 
     public void performWait() throws Exception {
-        checkIfBattleDoesNotHaveCurrentStack();
+        checkCurrentStackPresence(true);
         queue.addToWaiting(currentStack);
         currentStack = null;
     }
 
-    public void performSurrender(BattleUnitsStack battleUnitsStack) throws Exception {
-        checkIfBattleDoesNotHaveCurrentStack();
-        if (battleUnitsStack.getBattleSide() == BattleSide.FIRST_ARMY)
+    public void performSurrender() throws Exception {
+        checkCurrentStackPresence(true);
+        if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
             status = Status.SECOND_ARMY_WON;
         else
             status = Status.FIRST_ARMY_WON;
-        queue.addToMadeActions(battleUnitsStack);
+        queue.addToMadeActions(currentStack);
         currentStack = null;
     }
 
     /**
-     * Exceptions Raising
+     * Raising Exceptions if Current Performing Stack
+     * already exists and the Next Performing Stack is asked;
+     * or the Perform Action is defined but the Current
+     * Performing Stack was not defined
      */
-    private void checkIfBattleHasCurrentStack() throws Exception {
-        if (currentStack != null)
+    private void checkCurrentStackPresence(boolean shouldBePresent) throws Exception {
+        if (shouldBePresent && currentStack == null)
+            throw new BattleDoesNotHaveStackAwaitingActionException();
+        else if (!shouldBePresent && currentStack != null)
             throw new BattleAlreadyHasStackAwaitingActionException();
     }
 
-    private void checkIfBattleDoesNotHaveCurrentStack() throws Exception {
-        if (currentStack == null)
-            throw new BattleDoesNotHaveStackAwaitingActionException();
+    /**
+     * Raising Exception if Current Performing Stack
+     * is to use a Cast that it does not have
+     */
+    private void checkIfCurrentStackHasCast(Cast cast) throws Exception {
+        if (!currentStack.doesHaveCast(cast))
+            throw new StackDoesNotHaveCastException(cast);
+    }
+
+    /**
+     * Raising Exception if the next Stack
+     * is asked but the battle is over
+     */
+    private void checkIfBattleIsOver() throws Exception {
+        if (status != Status.IN_ACTION)
+            throw new BattleIsOverException();
     }
 
     /**
@@ -119,7 +146,7 @@ public class Battle {
             }
         for (BattleUnitsStack stack : secondArmy.getStacks())
             if (stack.getHealthPoints() != 0) {
-                allFirstArmyStacksDead = false;
+                allSecondArmyStacksDead = false;
                 break;
             }
         if (allFirstArmyStacksDead) status = Status.SECOND_ARMY_WON;
