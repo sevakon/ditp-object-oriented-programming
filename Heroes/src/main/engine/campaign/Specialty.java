@@ -1,20 +1,19 @@
 package main.engine.campaign;
 
-import main.engine.specialties.SpecialtyName;
 
 public abstract class Specialty {
-    private SpecialtyName name;
+    private String name;
 
-    public Specialty(SpecialtyName name) {
+    public Specialty(String name) {
         this.name = name;
     }
 
-    public SpecialtyName getName() {
+    public String getName() {
         return name;
     }
 
     @Override
     public String toString() {
-        return name.toString();
+        return name;
     }
 }

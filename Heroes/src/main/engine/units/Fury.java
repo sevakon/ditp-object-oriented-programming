@@ -7,6 +7,6 @@ import main.engine.specialties.skills.*;
 public class Fury extends Unit {
 
     public Fury() {
-        super(Type.FURY, 16, 5, 3, 5, 7, 16, new Specialty[]{new EnemyNoResist()});
+        super("FURY", 16, 5, 3, 5, 7, 16, new Specialty[]{new EnemyNoResist()});
     }
 }

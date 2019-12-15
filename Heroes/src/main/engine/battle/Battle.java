@@ -46,15 +46,15 @@ public class Battle {
 
     public void performAttack(BattleUnitsStack targetStack) throws Exception {
         checkCurrentStackPresence(true);
-        if (currentStack.getAvailableSkills().
-                stream().
-                filter(skill -> skill.getName() == SkillName.ACCURATE_SHOT).
-                count() > 0) {
+        if (currentStack.getAvailableSkills()
+                .stream()
+                .filter(skill -> skill.getName() == "ACCURATE SHOT")
+                .count() > 0) {
             attack(currentStack, targetStack, true);
-        } else if (currentStack.getAvailableSkills().
-                    stream().
-                    filter(skill -> skill.getName() == SkillName.SHOT_TO_ALL).
-                    count() > 0) {
+        } else if (currentStack.getAvailableSkills()
+                    .stream()
+                    .filter(skill -> skill.getName() == "SHOT_TO_ALL")
+                    .count() > 0) {
             if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
                 getSecondArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
             else
@@ -77,11 +77,12 @@ public class Battle {
     public void performCast(BattleUnitsStack targetStack, Cast cast) throws Exception {
         checkCurrentStackPresence(true);
         checkIfCurrentStackHasCast(cast);
-        if (cast.getName() == CastName.REINCARNATION)
+        if (cast.getName() == "REINCARNATION")
             cast.multiplyHealthPointsToAdd(targetStack.getNumberOfAliveUnits());
         targetStack.takeCast(cast);
         currentStack.removeCast(cast);
         queue.addToMadeActions(currentStack);
+        queue.sort();
         currentStack = null;
         updateBattleStatus();
     }

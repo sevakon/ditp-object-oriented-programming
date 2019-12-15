@@ -1,11 +1,9 @@
 package main.engine.campaign;
 
-import main.engine.units.Type;
-
 import java.util.ArrayList;
 
 public class Unit {
-    private Type type;
+    private String type;
     private int healthPoints;
     private int attack;
     private int defence;
@@ -14,7 +12,7 @@ public class Unit {
     private double initiative;
     private Specialty specialties[];
 
-    public Unit(Type type, int healthPoints, int attack, int defence, int lowerDamage,
+    public Unit(String type, int healthPoints, int attack, int defence, int lowerDamage,
                 int upperDamage, double initiative, Specialty[] specialties) {
         this.type = type;
         this.attack = attack;
@@ -26,7 +24,7 @@ public class Unit {
         this.specialties = specialties;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 

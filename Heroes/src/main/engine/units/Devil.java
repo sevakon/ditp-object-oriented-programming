@@ -7,6 +7,6 @@ import main.engine.specialties.skills.*;
 public class Devil extends Unit {
 
     public Devil() {
-        super(Type.DEVIL, 166, 27, 55, 36, 66, 11, new Specialty[]{new Weakening()});
+        super("DEVIL", 166, 27, 55, 36, 66, 11, new Specialty[]{new Weakening()});
     }
 }

@@ -1,8 +1,6 @@
 package main.engine.battle;
 
 import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  * Battle Queue class
@@ -47,6 +45,11 @@ public class BattleQueue {
 
     public void addToMadeActions(BattleUnitsStack stack) {
         madeActionStacks.add(stack);
+    }
+
+    public void sort() {
+        sortPlaying();
+        sortWaiting();
     }
 
     /**

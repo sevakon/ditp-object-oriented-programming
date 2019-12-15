@@ -1,6 +1,5 @@
 package main.engine.campaign;
 
-import main.engine.specialties.CastName;
 
 public class Cast extends Specialty {
     private int attackToAdd;
@@ -17,7 +16,7 @@ public class Cast extends Specialty {
 
     private int healthPointsToAdd;
 
-    public Cast(CastName castName, int attackToAdd, int attackToSubtract, double attackMultiplier,
+    public Cast(String castName, int attackToAdd, int attackToSubtract, double attackMultiplier,
                 int defenceToAdd, int defenceToSubtract, double defenceMultiplier, double initiativeToAdd,
                 double initiativeToSubtract, double initiativeMultiplier, int healthPointsToAdd) {
         super(castName);

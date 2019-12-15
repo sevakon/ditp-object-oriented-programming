@@ -7,6 +7,6 @@ import main.engine.specialties.skills.*;
 public class Angel extends Unit {
 
     public Angel() {
-        super(Type.ANGEL, 180, 27, 27, 45, 45, 11, new Specialty[]{new PunishingShot()});
+        super("ANGEL", 180, 27, 27, 45, 45, 11, new Specialty[]{new PunishingShot()});
     }
 }

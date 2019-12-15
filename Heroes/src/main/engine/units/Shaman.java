@@ -7,6 +7,6 @@ import main.engine.specialties.skills.*;
 public class Shaman extends Unit {
 
     public Shaman() {
-        super(Type.SHAMAN, 40, 12, 10, 7, 12, 10.5, new Specialty[]{new Acceleration()});
+        super("SHAMAN", 40, 12, 10, 7, 12, 10.5, new Specialty[]{new Acceleration()});
     }
 }
