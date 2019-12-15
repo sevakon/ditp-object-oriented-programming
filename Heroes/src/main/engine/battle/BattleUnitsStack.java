@@ -27,7 +27,7 @@ public class BattleUnitsStack extends UnitsStack {
         numberOfDeadUnits = 0;
         healthPoints = numberOfAliveUnits * getUnit().getHealthPoints();
         maxHealthPoints = healthPoints;
-        availableCasts = getUnit().getCastes();
+        availableCasts = getUnit().getCasts();
     }
 
     /**
@@ -169,38 +169,6 @@ public class BattleUnitsStack extends UnitsStack {
 
     public ArrayList<Cast> getAvailableCasts() {
         return availableCasts;
-    }
-
-    public void takeCast(Cast cast) {
-        addAttack(cast.getAttackToAdd());
-        subtractAttack(cast.getAttackToSubtract());
-        addDefence(cast.getDefenceToAdd());
-        subtractDefence(cast.getDefenceToSubtract());
-        addInitiative(cast.getInitiativeToAdd());
-        subtractInitiative(cast.getInitiativeToSubtract());
-
-        int newBattleAttack = (int) (cast.getAttackMultiplier() * getBattleAttack());
-        int attackDifference = newBattleAttack - getBattleAttack();
-        if (attackDifference > 0)
-            addAttack(attackDifference);
-        else if (attackDifference < 0)
-            subtractAttack(-attackDifference);
-
-        int newBattleDefence = (int) (cast.getDefenceMultiplier() * getBattleDefence());
-        int defenceDifference = newBattleDefence - getBattleDefence();
-        if (defenceDifference > 0)
-            addDefence(defenceDifference);
-        else if (defenceDifference < 0)
-            subtractDefence(-defenceDifference);
-
-        double newBattleInitiative = cast.getInitiativeMultiplier() * getBattleInitiative();
-        double initiativeDifference = newBattleInitiative - getBattleInitiative();
-        if (initiativeDifference > 0)
-            addInitiative(initiativeDifference);
-        else if (initiativeDifference < 0)
-            subtractInitiative(-initiativeDifference);
-
-        addHealthPoints(cast.getHealthPointsToAdd());
     }
 
     public void removeCast(Cast cast) {

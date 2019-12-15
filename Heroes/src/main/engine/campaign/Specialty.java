@@ -1,7 +1,7 @@
 package main.engine.campaign;
 
 
-public abstract class Specialty {
+public class Specialty {
     private String name;
 
     public Specialty(String name) {

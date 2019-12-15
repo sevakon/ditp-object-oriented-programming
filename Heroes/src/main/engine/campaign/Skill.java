@@ -1,11 +1,22 @@
 package main.engine.campaign;
 
 
-public class Skill extends Specialty {
+import main.engine.battle.Battle;
+import main.engine.battle.BattleUnitsStack;
 
-    public Skill(String skillName) {
+public abstract class Skill extends Specialty {
+    protected SkillType type;
+
+    public Skill(String skillName, SkillType type) {
         super(skillName);
+        this.type = type;
     }
+
+    public SkillType getType() {
+        return type;
+    }
+
+    public abstract void activate(Battle battle, BattleUnitsStack holder, BattleUnitsStack target);
 
     @Override
     public boolean equals(Object o) {

@@ -1,9 +1,13 @@
 package main.engine.battle;
 
-import java.util.Random;
+import main.engine.actions.Attack;
+import main.engine.actions.Defend;
+import main.engine.actions.Surrender;
+import main.engine.actions.Wait;
 import main.engine.campaign.*;
 import main.engine.exception.*;
-import main.engine.specialties.*;
+
+import java.util.ArrayList;
 
 
 /**
@@ -46,22 +50,7 @@ public class Battle {
 
     public void performAttack(BattleUnitsStack targetStack) throws Exception {
         checkCurrentStackPresence(true);
-        if (currentStack.getAvailableSkills()
-                .stream()
-                .filter(skill -> skill.getName() == "ACCURATE SHOT")
-                .count() > 0) {
-            attack(currentStack, targetStack, true);
-        } else if (currentStack.getAvailableSkills()
-                    .stream()
-                    .filter(skill -> skill.getName() == "SHOT_TO_ALL")
-                    .count() > 0) {
-            if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
-                getSecondArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
-            else
-                getFirstArmy().getStacks().forEach(defendingStack -> attack(currentStack, defendingStack, false));
-        } else {
-            attack(currentStack, targetStack, false);
-        }
+        new Attack().perform(this, currentStack, targetStack);
         queue.addToMadeActions(currentStack);
         currentStack = null;
         updateBattleStatus();
@@ -69,7 +58,7 @@ public class Battle {
 
     public void performDefence() throws Exception {
         checkCurrentStackPresence(true);
-        defence(currentStack);
+        new Defend().perform(this, currentStack, currentStack);
         queue.addToMadeActions(currentStack);
         currentStack = null;
     }
@@ -77,9 +66,7 @@ public class Battle {
     public void performCast(BattleUnitsStack targetStack, Cast cast) throws Exception {
         checkCurrentStackPresence(true);
         checkIfCurrentStackHasCast(cast);
-        if (cast.getName() == "REINCARNATION")
-            cast.multiplyHealthPointsToAdd(targetStack.getNumberOfAliveUnits());
-        targetStack.takeCast(cast);
+        cast.use(this, currentStack, targetStack);
         currentStack.removeCast(cast);
         queue.addToMadeActions(currentStack);
         queue.sort();
@@ -89,16 +76,13 @@ public class Battle {
 
     public void performWait() throws Exception {
         checkCurrentStackPresence(true);
-        queue.addToWaiting(currentStack);
+        new Wait().perform(this, currentStack, currentStack);
         currentStack = null;
     }
 
     public void performSurrender() throws Exception {
         checkCurrentStackPresence(true);
-        if (currentStack.getBattleSide() == BattleSide.FIRST_ARMY)
-            status = Status.SECOND_ARMY_WON;
-        else
-            status = Status.FIRST_ARMY_WON;
+        new Surrender().perform(this, currentStack, currentStack);
         queue.addToMadeActions(currentStack);
         currentStack = null;
     }
@@ -154,30 +138,12 @@ public class Battle {
         if (allSecondArmyStacksDead) status = Status.FIRST_ARMY_WON;
     }
 
-    private static void attack(BattleUnitsStack attackingStack, BattleUnitsStack defendingStack, Boolean ignoreDefence) {
-        int attack = attackingStack.getBattleAttack();
-        int defence = defendingStack.getBattleDefence();
-        if (ignoreDefence) defence = 0;
-        int lowerBoundDamage = attackingStack.getNumberOfAliveUnits() * attackingStack.getUnit().getLowerDamage();
-        int upperBoundDamage = attackingStack.getNumberOfAliveUnits() * attackingStack.getUnit().getUpperDamage();
-        if (attack > defence) {
-            lowerBoundDamage *= (int) (1 + 0.05 * (attack - defence));
-            upperBoundDamage *= (int) (1 + 0.05 * (attack - defence));
-        } else {
-            lowerBoundDamage /= (int) (1 + 0.05 * (defence - attack));
-            upperBoundDamage /= (int) (1 + 0.05 * (defence - attack));
-        }
-        int damage = new Random().nextInt((upperBoundDamage - lowerBoundDamage) + 1) + lowerBoundDamage;
-        defendingStack.subtractHealthPoints(damage);
-    }
-
-    private static void defence(BattleUnitsStack battleUnitsStack) {
-        int defenceToAdd = (int) (0.3 * battleUnitsStack.getBattleDefence());
-        battleUnitsStack.addDefence(defenceToAdd);
-    }
-
     public Status getStatus() {
         return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getNumberOfRoundsPlayed() {
@@ -190,6 +156,10 @@ public class Battle {
 
     public BattleArmy getSecondArmy() {
         return secondArmy;
+    }
+
+    public BattleQueue getQueue() {
+        return queue;
     }
 
     @Override

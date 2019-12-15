@@ -2,7 +2,6 @@ package main;
 
 import main.engine.campaign.*;
 import main.engine.exception.*;
-import main.engine.specialties.*;
 import main.engine.units.*;
 import main.engine.battle.*;
 

@@ -7,20 +7,18 @@ public class Unit {
     private int healthPoints;
     private int attack;
     private int defence;
-    private int lowerDamage;
-    private int upperDamage;
+    private Damage damage;
     private double initiative;
     private Specialty specialties[];
 
-    public Unit(String type, int healthPoints, int attack, int defence, int lowerDamage,
-                int upperDamage, double initiative, Specialty[] specialties) {
+    public Unit(String type, int healthPoints, int attack, int defence,
+                    Damage damage, double initiative, Specialty[] specialties) {
         this.type = type;
         this.attack = attack;
         this.defence = defence;
         this.healthPoints = healthPoints;
         this.initiative = initiative;
-        this.lowerDamage = lowerDamage;
-        this.upperDamage = upperDamage;
+        this.damage = damage;
         this.specialties = specialties;
     }
 
@@ -40,12 +38,8 @@ public class Unit {
         return defence;
     }
 
-    public int getLowerDamage() {
-        return lowerDamage;
-    }
-
-    public int getUpperDamage() {
-        return upperDamage;
+    public Damage getDamage() {
+        return damage;
     }
 
     public double getInitiative() {
@@ -56,13 +50,13 @@ public class Unit {
         return specialties;
     }
 
-    public ArrayList<Cast> getCastes() {
-        ArrayList<Cast> castes = new ArrayList<>();
+    public ArrayList<Cast> getCasts() {
+        ArrayList<Cast> casts = new ArrayList<>();
         for (Specialty specialty: specialties)
             if (specialty instanceof Cast)
-                castes.add((Cast) specialty);
+                casts.add((Cast) specialty);
 
-        return castes;
+        return casts;
     }
 
     public ArrayList<Skill> getSkills() {
@@ -77,6 +71,6 @@ public class Unit {
     @Override
     public String toString() {
         return "type: " + type + ", HP: " + healthPoints + ", attack: " + attack + ", defence: " +
-                defence + ", damage: " + lowerDamage + "-" + upperDamage + ", initiative " + initiative;
+                defence + ", damage: " + damage.getLower() + "-" + damage.getUpper() + ", initiative " + initiative;
     }
 }
