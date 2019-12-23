@@ -12,6 +12,6 @@ public class Reincarnation extends Cast {
 
     @Override
     public void use(Battle battle, BattleUnitsStack castingStack, BattleUnitsStack targetStack) {
-        targetStack.addHealthPoints(castingStack.getNumberOfAliveUnits());
+        targetStack.addHealthPoints(100 * castingStack.getNumberOfAliveUnits());
     }
 }

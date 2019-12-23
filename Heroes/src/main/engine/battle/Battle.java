@@ -7,8 +7,6 @@ import main.engine.actions.Wait;
 import main.engine.campaign.*;
 import main.engine.exception.*;
 
-import java.util.ArrayList;
-
 
 /**
  * Battle Class
