@@ -1,9 +1,8 @@
 package main.engine.battle;
 
-import main.engine.campaign.Army;
 import main.engine.campaign.UnitsStack;
 import main.engine.exception.StackSizeExceededException;
-
+import main.engine.campaign.Army;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

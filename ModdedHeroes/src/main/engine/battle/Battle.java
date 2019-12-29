@@ -4,11 +4,8 @@ import main.engine.actions.Attack;
 import main.engine.actions.Defend;
 import main.engine.actions.Surrender;
 import main.engine.actions.Wait;
-import main.engine.campaign.Cast;
-import main.engine.exception.BattleAlreadyHasStackAwaitingActionException;
-import main.engine.exception.BattleDoesNotHaveStackAwaitingActionException;
-import main.engine.exception.BattleIsOverException;
-import main.engine.exception.StackDoesNotHaveCastException;
+import main.engine.campaign.*;
+import main.engine.exception.*;
 
 
 /**
@@ -107,7 +104,7 @@ public class Battle {
      */
     private void checkIfCurrentStackHasCast(Cast cast) throws Exception {
         if (!currentStack.doesHaveCast(cast))
-            throw new StackDoesNotHaveCastException(currentStack, cast);
+            throw new StackDoesNotHaveCastException(cast);
     }
 
     /**

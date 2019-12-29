@@ -1,8 +1,11 @@
 package main.engine.skills;
 
-import main.engine.actions.*;
-import main.engine.battle.*;
-import main.engine.campaign.*;
+import main.engine.actions.Attack;
+import main.engine.battle.Battle;
+import main.engine.battle.BattleSide;
+import main.engine.battle.BattleUnitsStack;
+import main.engine.campaign.Skill;
+import main.engine.campaign.SkillType;
 
 import java.util.ArrayList;
 

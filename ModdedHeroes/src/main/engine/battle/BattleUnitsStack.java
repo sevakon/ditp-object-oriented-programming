@@ -177,7 +177,7 @@ public class BattleUnitsStack extends UnitsStack {
 
     public boolean doesHaveCast(Cast targetStack) {
         for (Cast cast : getAvailableCasts())
-            if (cast.equals(targetStack))
+            if (cast == targetStack)
                 return true;
 
         return false;
