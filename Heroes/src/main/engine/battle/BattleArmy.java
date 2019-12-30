@@ -16,7 +16,7 @@ public class BattleArmy {
         stacks = new ArrayList<>();
     }
 
-    public BattleArmy(Army army) {
+    public BattleArmy(Army army) throws Exception {
         stacks = new ArrayList<>();
         ArrayList<UnitsStack> campaignStacks = army.getStacks();
         for (UnitsStack stack : campaignStacks) {

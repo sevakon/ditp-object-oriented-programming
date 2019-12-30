@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="pane" fx:controller="main.ui.MainController" xmlns:fx="http://javafx.com/fxml"
+            prefHeight="600" prefWidth="800" >
+    <Button id="startButton"  text="Start Game"
+            onAction="#startGameButtonPressed" fx:id="startButton"
+            AnchorPane.topAnchor="400.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0"/>
+    <Button id="optionsButton"  text="Options"
+            onAction="#optionsButtonPressed" fx:id="optionsButton"
+            AnchorPane.topAnchor="430.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0"/>
+    <Button id="quitButton"  text="Quit"
+            onAction="#quitButtonPressed" fx:id="quitButton"
+            AnchorPane.topAnchor="460.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0"/>
+    <Label id="label" fx:id="label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+
+</AnchorPane>

@@ -31,8 +31,10 @@ public class Battle {
     public Battle(BattleArmy firstArmy, BattleArmy secondArmy) {
         this.firstArmy = firstArmy;
         this.secondArmy = secondArmy;
-        this.queue = new BattleQueue(firstArmy, secondArmy);
         this.status = Status.IN_ACTION;
+        this.queue = new BattleQueue(firstArmy, secondArmy);
+        for (BattleUnitsStack stack : firstArmy.getStacks()) stack.setBattleSide(BattleSide.FIRST_ARMY);
+        for (BattleUnitsStack stack : secondArmy.getStacks()) stack.setBattleSide(BattleSide.SECOND_ARMY);
     }
 
     /**

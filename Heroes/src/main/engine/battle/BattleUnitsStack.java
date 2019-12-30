@@ -21,7 +21,7 @@ public class BattleUnitsStack extends UnitsStack {
      * BattleUnitsStack constructor
      * Takes unitsStack as an argument
      */
-    public BattleUnitsStack(UnitsStack unitsStack) {
+    public BattleUnitsStack(UnitsStack unitsStack) throws Exception {
         super(unitsStack);
         numberOfAliveUnits = getNumberOfUnits();
         numberOfDeadUnits = 0;
@@ -33,7 +33,7 @@ public class BattleUnitsStack extends UnitsStack {
     /**
      * BattleUnitsStack Clone constructor
      */
-    public BattleUnitsStack(BattleUnitsStack battleUnitsStack) {
+    public BattleUnitsStack(BattleUnitsStack battleUnitsStack) throws Exception {
         super(battleUnitsStack.getUnit(), battleUnitsStack.getNumberOfUnits());
         numberOfAliveUnits = battleUnitsStack.numberOfAliveUnits;
         numberOfDeadUnits = battleUnitsStack.numberOfDeadUnits;
