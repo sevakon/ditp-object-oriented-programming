@@ -1,18 +1,15 @@
 package main.engine.campaign;
 
-import main.engine.exception.UnitsStackNumberIsLessThanOneException;
-
 public class UnitsStack {
     private Unit unit;
     private int numberOfUnits;
 
-    public UnitsStack(Unit unit, int numberOfUnits) throws Exception {
-        checkNumberOfUnits(numberOfUnits);
+    public UnitsStack(Unit unit, int numberOfUnits) {
         this.unit = unit;
         this.numberOfUnits = numberOfUnits;
     }
 
-    public UnitsStack(UnitsStack unitsStack) throws Exception{
+    public UnitsStack(UnitsStack unitsStack) {
         this(unitsStack.getUnit(), unitsStack.getNumberOfUnits());
     }
 
@@ -22,10 +19,6 @@ public class UnitsStack {
 
     public int getNumberOfUnits() {
         return numberOfUnits;
-    }
-
-    private void checkNumberOfUnits(int numberOfUnits) throws Exception {
-        if (numberOfUnits <= 0) throw new UnitsStackNumberIsLessThanOneException(numberOfUnits);
     }
 
     @Override

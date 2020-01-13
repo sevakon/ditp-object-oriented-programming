@@ -1,6 +1,5 @@
 package main.engine.campaign;
 
-import main.engine.Mods;
 import java.util.ArrayList;
 
 public class Unit {
@@ -67,10 +66,6 @@ public class Unit {
                 skills.add((Skill) specialty);
 
         return skills;
-    }
-
-    public static ArrayList<Unit> getAllTypeOfUnits() {
-        return (ArrayList<Unit>)(ArrayList<?>) Mods.getObjectMods(Unit.class);
     }
 
     @Override

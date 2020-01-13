@@ -4,11 +4,8 @@ import main.engine.actions.Attack;
 import main.engine.actions.Defend;
 import main.engine.actions.Surrender;
 import main.engine.actions.Wait;
-import main.engine.campaign.Cast;
-import main.engine.exception.BattleAlreadyHasStackAwaitingActionException;
-import main.engine.exception.BattleDoesNotHaveStackAwaitingActionException;
-import main.engine.exception.BattleIsOverException;
-import main.engine.exception.StackDoesNotHaveCastException;
+import main.engine.campaign.*;
+import main.engine.exception.*;
 
 
 /**
@@ -31,10 +28,8 @@ public class Battle {
     public Battle(BattleArmy firstArmy, BattleArmy secondArmy) {
         this.firstArmy = firstArmy;
         this.secondArmy = secondArmy;
-        this.status = Status.IN_ACTION;
         this.queue = new BattleQueue(firstArmy, secondArmy);
-        for (BattleUnitsStack stack : firstArmy.getStacks()) stack.setBattleSide(BattleSide.FIRST_ARMY);
-        for (BattleUnitsStack stack : secondArmy.getStacks()) stack.setBattleSide(BattleSide.SECOND_ARMY);
+        this.status = Status.IN_ACTION;
     }
 
     /**
@@ -109,7 +104,7 @@ public class Battle {
      */
     private void checkIfCurrentStackHasCast(Cast cast) throws Exception {
         if (!currentStack.doesHaveCast(cast))
-            throw new StackDoesNotHaveCastException(currentStack, cast);
+            throw new StackDoesNotHaveCastException(cast);
     }
 
     /**

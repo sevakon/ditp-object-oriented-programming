@@ -21,7 +21,7 @@ public class BattleUnitsStack extends UnitsStack {
      * BattleUnitsStack constructor
      * Takes unitsStack as an argument
      */
-    public BattleUnitsStack(UnitsStack unitsStack) throws Exception {
+    public BattleUnitsStack(UnitsStack unitsStack) {
         super(unitsStack);
         numberOfAliveUnits = getNumberOfUnits();
         numberOfDeadUnits = 0;
@@ -33,7 +33,7 @@ public class BattleUnitsStack extends UnitsStack {
     /**
      * BattleUnitsStack Clone constructor
      */
-    public BattleUnitsStack(BattleUnitsStack battleUnitsStack) throws Exception {
+    public BattleUnitsStack(BattleUnitsStack battleUnitsStack) {
         super(battleUnitsStack.getUnit(), battleUnitsStack.getNumberOfUnits());
         numberOfAliveUnits = battleUnitsStack.numberOfAliveUnits;
         numberOfDeadUnits = battleUnitsStack.numberOfDeadUnits;
@@ -177,7 +177,7 @@ public class BattleUnitsStack extends UnitsStack {
 
     public boolean doesHaveCast(Cast targetStack) {
         for (Cast cast : getAvailableCasts())
-            if (cast.equals(targetStack))
+            if (cast == targetStack)
                 return true;
 
         return false;
